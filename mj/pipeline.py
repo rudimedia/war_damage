@@ -645,6 +645,7 @@ def predict_probs(model, X, mu=None, sd=None, device="cpu", batch=256,
     of the data never exists. Pass zero_channels to blank a channel group,
     which is how the modality ablation works.
     """
+    device = next(model.parameters()).device
     model.eval()
     out = []
     for i in range(0, len(X), batch):
