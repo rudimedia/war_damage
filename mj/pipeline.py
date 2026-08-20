@@ -1008,6 +1008,79 @@ class SiameseCNN(nn.Module):
         f = torch.cat([f_pre, f_post, f_post - f_pre], dim=1)
         return self.head(f).squeeze(1)
 
+class SpatialDropout(nn.Module):
+    """Dropout that removes whole feature maps rather than single pixels.
+
+    Ordinary dropout does almost nothing inside a conv stack: neighbouring
+    pixels in a feature map are strongly correlated, so zeroing one leaves
+    its neighbours to carry the same information straight through. Dropping
+    the entire channel forces the next layer to cope without that feature.
+    """
+
+    def __init__(self, p):
+        super().__init__()
+        self.drop = nn.Dropout2d(p)
+
+    def forward(self, x):
+        return self.drop(x)
+
+
+@register_model("tiny_cnn")
+class TinyCNN(nn.Module):
+    """A deliberately small CNN, regularised where it actually bites.
+
+    Three changes from SmallCNN, each aimed at a specific failure seen in the
+    siamese and small_cnn runs:
+
+    1. Dropout lives INSIDE the conv stack, as channel dropout. SmallCNN puts
+       one Dropout before a Linear(chans[-1], 1) - at depth 2 that is dropout
+       on a 32-vector feeding 33 parameters, which is why raising it to 0.6
+       changed almost nothing.
+
+    2. The head keeps the centre. SmallCNN global-average-pools the final map,
+       so a change at the patch edge and the same change dead centre produce
+       identical features. The patch is 320 m across and centred on ONE
+       building, so that hands neighbourhood inference to the CNN by accident
+       - which is stage two's job. Here the centre cell is concatenated with
+       the global average, and the model can weigh them.
+
+    3. Channels grow more slowly (`growth`, default 1.5 rather than 2), so
+       depth can be increased for receptive field without the parameter count
+       exploding.
+
+    At the defaults this is roughly 3k parameters against ~350k patches. Note
+    the effective sample is far smaller than that: a 32 px patch is 320 m
+    across, so neighbouring buildings share pixels and the training band holds
+    a few thousand independent neighbourhoods, not 350k. That mismatch, not
+    raw capacity, is what drove the overfitting.
+    """
+
+    def __init__(self, n_channels, width=8, depth=3, dropout=0.15,
+                 growth=1.5, head_dropout=0.2, use_centre=True):
+        super().__init__()
+        chans = [n_channels] + [max(4, int(round(width * growth ** i)))
+                                for i in range(depth)]
+        blocks = []
+        for i in range(depth):
+            blocks.append(conv_block(chans[i], chans[i + 1]))
+            if dropout > 0:
+                blocks.append(SpatialDropout(dropout))
+        self.features = nn.Sequential(*blocks)
+
+        self.use_centre = use_centre
+        feat = chans[-1] * (2 if use_centre else 1)
+        self.head = nn.Sequential(nn.Dropout(head_dropout), nn.Linear(feat, 1))
+
+    def forward(self, x):
+        f = self.features(x)
+        pooled = f.mean(dim=(2, 3))
+        if self.use_centre:
+            # the target building sits at the patch centre by construction
+            i = f.shape[-2] // 2
+            j = f.shape[-1] // 2
+            pooled = torch.cat([pooled, f[:, :, i, j]], dim=1)
+        return self.head(pooled).squeeze(1)
+
 
 def build_model(name, channel_names, device="cpu", quiet=False, **hparams):
     """Create a model from the registry, configured for the active channels.
