@@ -57,6 +57,7 @@ import re
 import glob
 import json
 import inspect
+import time
 
 import numpy as np
 import pandas as pd
@@ -149,22 +150,253 @@ PREP = {
 #
 # label_dates: the UNOSAT assessment dates to use, OLDEST FIRST.
 # war_start: conflict start date, the pre war imagery window ends here.
+# role: "develop" or "holdout". This is about the CITY, not about a split part,
+#     and the distinction matters because the word "test" means two different
+#     things in this project:
+#
+#     "develop"  the city the model is built on. Notebook 2 carves it into
+#                latitude bands - train / stack / val / test - so it has a
+#                test set OF ITS OWN. That in-city test band measures
+#                generalisation to unseen GROUND in a city the model knows.
+#                Gaza is the only one.
+#     "holdout"  never touched by any split part, not even the in-city test
+#                band, until the final comparison. These measure something
+#                harder and more interesting: generalisation to a whole new
+#                CITY, sensor geometry, building stock and conflict.
+#
+#     So "Gaza is a develop city" and "Gaza:0.00-0.33 is the test band" are
+#     both true and not in conflict. Nothing enforces the holdout
+#     automatically - notebook 2's split config is written by hand - so
+#     held_out_cities() exists to make an accidental inclusion easy to catch.
+#
+# Two windows have to line up for a city to be usable at all, and both are
+# derived from war_start rather than stored:
+#
+#     pre  = the 12 months ENDING at war_start
+#     post = one month BACKWARD from each assessment date
+#
+# An assessment whose post window starts before war_start is not a
+# post-war observation at all: its "pre-war" baseline would be imagery taken
+# AFTER the damage, which inverts the comparison the model is built on. And
+# Sentinel-1 IW barely exists before 2014-10-01, so nothing earlier can be
+# imaged regardless. Notebook 1 checks both and refuses to export a date that
+# fails either - see check_city_windows().
 # --------------------------------------------------------------------------
 
 CITY_REGISTRY = {
     "Gaza": {
         "label_dates": ["20240503", "20240706", "20240906"],
         "war_start": "2023-10-07",
+        "role": "develop",      # split into train/stack/val/test BANDS in nb 2
     },
-    # add the other cities once Gaza works end to end
-    # "Aleppo":   {"label_dates": ["20160907"], "war_start": "2016-07-01"},
-    # "Mariupol": {"label_dates": ["20220512"], "war_start": "2022-02-24"},
+    # Held-out cities: absent from every split part in notebook 2, including
+    # its in-city test band. Labels for all of these come from notebook 0.
+    "Raqqa": {
+        # UNOSAT publishes five assessments for Raqqa, but only the last one
+        # is usable here. 20131022 and 20140212 predate Sentinel-1 entirely,
+        # and 20150529 / 20170203 fall INSIDE the pre-war baseline window
+        # (2016-06-06 to 2017-06-06), so their "pre-war" imagery would come
+        # after the damage. Using an earlier war_start does not rescue them:
+        # a 12-month pre window before 2015 has no Sentinel-1 either.
+        "label_dates": ["20171021"],
+        "war_start": "2017-06-06",
+        "role": "holdout",
+    },
+    "Mosul": {
+        # Only the 20170804 release has been processed by notebook 0 so far.
+        # CE20140613IRQ_Mosul_damage_assessment.gdb holds three more dates
+        # (20170611, 20170616, 20170630) if a temporal series is wanted here.
+        "label_dates": ["20170804"],
+        "war_start": "2016-10-17",
+        "role": "holdout",
+    },
+    "Chernihiv": {
+        "label_dates": ["20220428"],
+        "war_start": "2022-02-24",
+        "role": "holdout",
+    },
+    "Rubizhne": {
+        "label_dates": ["20220709"],
+        "war_start": "2022-02-24",
+        "role": "holdout",
+    },
 }
 
+S1_EARLIEST = "2014-10-01"   # Sentinel-1 IW data barely exists before this
 
-def add_city(name, label_dates, war_start):
+
+def add_city(name, label_dates, war_start, role="develop"):
     """Register another city, then re-run notebook 1 to preprocess it."""
-    CITY_REGISTRY[name] = {"label_dates": list(label_dates), "war_start": war_start}
+    CITY_REGISTRY[name] = {"label_dates": list(label_dates),
+                           "war_start": war_start, "role": role}
+
+
+def city_role(city):
+    """'develop' or 'holdout'. See the CITY_REGISTRY comment for the split."""
+    return CITY_REGISTRY[city].get("role", "develop")
+
+
+def development_cities():
+    """Cities notebook 2 may carve into train / stack / val / test bands.
+
+    Named for the city's role, not a split part: a development city contains
+    a test BAND of its own, which is a different thing from a holdout city.
+    """
+    return [c for c in CITY_REGISTRY if city_role(c) == "develop"]
+
+
+def held_out_cities():
+    """Cities absent from every split part until the final comparison."""
+    return [c for c in CITY_REGISTRY if city_role(c) == "holdout"]
+
+
+# The split parts a model is DEVELOPED on. "test" is in here on purpose: it
+# is Gaza's own southern band, which the model must not see during fitting
+# but which is still the develop city. The separate "holdout" part carries
+# the whole cities reserved for cross-city generalisation.
+DEVELOPMENT_PARTS = ("train", "stack", "val", "test")
+
+
+def holdout_split_entries():
+    """Split entries covering every holdout city at all of its dates.
+
+    Used as the default for CONFIG["split"]["holdout"], so registering a new
+    holdout city in CITY_REGISTRY is enough to get it evaluated.
+    """
+    return [f"{c}@*" for c in held_out_cities()]
+
+
+def check_split_holdout(split_cfg, parts=DEVELOPMENT_PARTS):
+    """Holdout cities that a development split part wrongly mentions.
+
+    Notebook 2's split is hand-written, so this is the cheap guard: pass it
+    CONFIG["split"] and it returns [(part, entry, city)] for every entry in
+    train/stack/val/test that names a holdout city. An empty list means the
+    holdout is intact. The "holdout" part itself is skipped - naming holdout
+    cities is exactly what it is for.
+    """
+    holdout = set(held_out_cities())
+    bad = []
+    for part, entries in split_cfg.items():
+        if part not in parts:
+            continue
+        for entry in entries:
+            city = parse_split_entry(entry)[0]
+            if city in holdout:
+                bad.append((part, entry, city))
+    return bad
+
+
+# --------------------------------------------------------------------------
+# Reloading a finished experiment.
+#
+# A completed {tag}.pt holds everything needed to score with that model:
+# weights, architecture, its params, the channel list, and the mu/sd the
+# training data was normalised by. So an evaluation run needs no training
+# data at all - which matters because recomputing channel_stats() streams
+# every training patch off Drive.
+#
+# Always take mu/sd from the CHECKPOINT rather than recomputing them. They
+# are part of the fitted model: normalising a holdout city by statistics
+# recomputed anywhere else silently feeds the network inputs on a different
+# scale from the ones it was trained on.
+# --------------------------------------------------------------------------
+
+def load_run(models_dir, tag, device="cpu", quiet=True):
+    """Rebuild a trained CNN from its checkpoint. No training data needed."""
+    path = os.path.join(models_dir, f"{tag}.pt")
+    if not os.path.exists(path):
+        raise FileNotFoundError(
+            f"no checkpoint {path}. Available: {list_saved_runs(models_dir)}")
+    state = torch.load(path, map_location="cpu", weights_only=False)
+    if not state.get("complete"):
+        raise RuntimeError(
+            f"{path} is an unfinished training checkpoint, not a saved run.")
+    model = build_model(state["model"], state["channel_names"],
+                        device=device, quiet=quiet, **state["params"])
+    model.load_state_dict(state["state_dict"])
+    model.to(device)
+    model.eval()
+    return {"tag": tag, "model": model, "params": state["params"],
+            "history": np.asarray(state["history"], float),
+            "best_epoch": int(state["best_epoch"]),
+            "val_ap": float(state["val_ap"]),
+            "mu": np.asarray(state["mu"]), "sd": np.asarray(state["sd"]),
+            "channel_names": list(state["channel_names"]),
+            "config": state.get("config")}
+
+
+def list_saved_runs(models_dir):
+    """Tags of every COMPLETED CNN checkpoint in an experiment's models dir."""
+    tags = []
+    for path in sorted(glob.glob(os.path.join(models_dir, "*.pt"))):
+        tag = os.path.splitext(os.path.basename(path))[0]
+        if tag.endswith("_training") or tag == "stackers":
+            continue
+        try:
+            state = torch.load(path, map_location="cpu", weights_only=False)
+        except Exception:
+            continue
+        if state.get("complete"):
+            tags.append(tag)
+    return tags
+
+
+def list_experiments():
+    """Every experiment folder, with what it has finished, newest first."""
+    rows = []
+    for root in sorted(glob.glob(os.path.join(EXPERIMENTS_DIR, "*"))):
+        if not os.path.isdir(root):
+            continue
+        models = os.path.join(root, "models")
+        metrics = os.path.join(root, "metrics")
+        sel_path = os.path.join(metrics, "final_selection.json")
+        selection = None
+        if os.path.exists(sel_path):
+            try:
+                with open(sel_path) as fh:
+                    sel = json.load(fh)
+                selection = f"{sel.get('run')} / {sel.get('variant')}"
+            except Exception:
+                selection = "unreadable"
+        rows.append({
+            "experiment": os.path.basename(root),
+            "runs": ",".join(list_saved_runs(models)) or "-",
+            "stackers": os.path.exists(os.path.join(models, "stackers.pt")),
+            "selection": selection or "-",
+            "tested": os.path.exists(
+                os.path.join(metrics, "final_test_complete.json")),
+            "modified": time.strftime(
+                "%Y-%m-%d %H:%M", time.localtime(os.path.getmtime(root))),
+        })
+    return pd.DataFrame(rows).sort_values("modified", ascending=False)
+
+
+def check_city_windows(city, dates=None):
+    """Flag assessment dates whose imagery windows are unusable.
+
+    Returns [(date, reason), ...], empty when every date is fine. See the
+    CITY_REGISTRY comment for why these two conditions matter.
+    """
+    im = PREP["imagery"]
+    war = pd.Timestamp(CITY_REGISTRY[city]["war_start"])
+    pre_start = war - pd.DateOffset(months=im["pre_months"])
+    problems = []
+    if pre_start < pd.Timestamp(S1_EARLIEST):
+        problems.append((None, f"pre window starts {pre_start.date()}, before "
+                               f"Sentinel-1 exists ({S1_EARLIEST})"))
+    for d in (dates or CITY_REGISTRY[city]["label_dates"]):
+        dt = pd.Timestamp(f"{d[:4]}-{d[4:6]}-{d[6:8]}")
+        length = pd.DateOffset(months=im["post_months"])
+        post_start = dt if im["post_direction"] == "forward" else dt - length
+        post_end = dt + length if im["post_direction"] == "forward" else dt
+        if post_end < pd.Timestamp(S1_EARLIEST):
+            problems.append((d, "no Sentinel-1 data at this date"))
+        elif post_start < war:
+            problems.append((d, f"post window starts {post_start.date()}, "
+                                f"before war_start {war.date()} - the pre-war "
+                                f"baseline would postdate the damage"))
+    return problems
 
 
 def list_label_dates(city, geometry=None):
@@ -531,6 +763,69 @@ def summarize_processed(city, dates=None):
         rows.append({"date": dt, "buildings": int(ok.sum()),
                      "damaged": int(y.sum()),
                      "damaged %": round(float(y.mean()) * 100, 2)})
+    return pd.DataFrame(rows)
+
+
+def inventory(city, dates=None, sensors=None):
+    """What already exists on disk for one city, per raster and patch array.
+
+    Everything downstream skips work whose output file is already there, so
+    nothing here is required for correctness - it exists so you can SEE, before
+    starting a run, that Gaza's 16 composites are already on Drive and only the
+    new cities will actually hit Earth Engine.
+
+    Returns a DataFrame with one row per (date, sensor) plus the pre row, and
+    columns saying whether the raster, the patch array and its valid mask are
+    present. Reads no pixels: this is os.path.exists and file sizes only.
+    """
+    sensors = sensors or PREP["sensors"]
+    dates = dates or CITY_REGISTRY[city]["label_dates"]
+
+    def _row(kind, date, window_days, sensor, raster, x_path, v_path):
+        have_r = os.path.exists(raster)
+        have_x = os.path.exists(x_path)
+        return {
+            "city": city, "kind": kind, "date": date or "-", "sensor": sensor,
+            "raster": have_r,
+            "raster_MB": round(os.path.getsize(raster) / 1e6, 1) if have_r else 0.0,
+            "patches": have_x,
+            "patch_GB": round(os.path.getsize(x_path) / 1e9, 2) if have_x else 0.0,
+            "valid_mask": os.path.exists(v_path),
+        }
+
+    rows = []
+    px, pv = pre_patch_paths(city)
+    for s in sensors:
+        rows.append(_row("pre", None, None, s, pre_raster_path(city, s), px, pv))
+    for date, window_days, is_labelled in post_jobs(city, dates):
+        xp, vp = post_patch_paths(city, date, window_days)
+        for s in sensors:
+            rows.append(_row("labelled" if is_labelled else "offset", date,
+                             window_days, s,
+                             post_raster_path(city, date, s, window_days),
+                             xp, vp))
+    return pd.DataFrame(rows)
+
+
+def inventory_summary(cities=None, dates_by_city=None):
+    """One row per city: how much is done, how much is still to download."""
+    cities = cities or list(CITY_REGISTRY)
+    rows = []
+    for city in cities:
+        dates = (dates_by_city or {}).get(city)
+        inv = inventory(city, dates)
+        rows.append({
+            "city": city,
+            "role": city_role(city),
+            "dates": len(dates or CITY_REGISTRY[city]["label_dates"]),
+            "rasters": f"{int(inv['raster'].sum())}/{len(inv)}",
+            "patches": f"{int(inv['patches'].sum())}/{len(inv)}",
+            "on_disk_GB": round(inv["raster_MB"].sum() / 1e3
+                                + inv["patch_GB"].sum(), 2),
+            "to_export": int((~inv["raster"]).sum()),
+            "to_cut": int((~inv["patches"]).sum()),
+            "table": os.path.exists(buildings_path(city)),
+        })
     return pd.DataFrame(rows)
 
 
