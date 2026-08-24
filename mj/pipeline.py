@@ -108,10 +108,51 @@ PREP = {
 
     "imagery": {
         "gee_project": "test-cnn-war-damage",  # your Earth Engine project id
-        "pre_months": 12,             # pre war baseline window length
-        "post_months": 1,             # post window length, matches "one_month"
-        # "backward" looks from the assessment date back, which is what you
-        # want when assessments are less than post_months apart
+        "pre_months": 12,             # pre-war baseline: UNCHANGED, still a
+                                      # fixed 12-month window ending at war_start
+
+        # ------------------------------------------------------------------
+        # POST composites: closest-in-time S1 scene(s), not a calendar window.
+        #
+        # Every post composite (labelled or offset) is built from the n
+        # acquisition days nearest to its date - either direction, whichever
+        # is actually closer - rather than a fixed month looking only backward.
+        # Same-day spatial slices are mosaicked before a date counts toward n.
+        # Investigation (see notebook 1's methodology notes) found the old
+        # backward-only window left labelled composites 11-23 days stale
+        # relative to their UNOSAT date - a real source of false negatives
+        # for damage that happened in that gap - while measured on real
+        # Gaza imagery, the denoising a 2-scene composite bought over a
+        # single scene was only ~10 percent (not the ~29 percent theory
+        # predicts), because the measurement is dominated by real urban
+        # texture, not speckle. So nearest-scene, n=1 by default, wins on
+        # both counts: tighter to the true date, and the lost denoising is
+        # smaller than it first looks.
+        #
+        # post_search_days: how far to search, EITHER direction, for
+        #   candidate scenes. Wide enough to survive one missed 12-day pass
+        #   (Sentinel-1's orbital repeat) with margin, narrow enough that it
+        #   cannot reach a different city's next assessment or its own
+        #   pre-war baseline - see check_city_windows().
+        # post_n_labelled: acquisition days averaged into a labelled composite.
+        #   1 keeps every composite a single real acquisition (see above);
+        #   set to 2 to trade some of that timing precision for a bit more
+        #   de-speckling.
+        # post_fallback_dates: additional acquisition dates used ONLY where
+        #   the primary composite has native nodata. Valid primary pixels are
+        #   never averaged or replaced. Keeping this in the file tag prevents
+        #   old, unfilled rasters and patches from being silently reused.
+        # post_n_offset (in "temporal" below): scenes for each unlabelled
+        #   temporal-offset composite. Kept at 1 - see that comment.
+        "post_search_days": 20,
+        "post_n_labelled": 1,
+        "post_fallback_dates": 0,
+
+        # post_months / post_direction now describe SENTINEL-2 ONLY: S2
+        # still composites over a fixed calendar window (S1's "closest
+        # scene" logic doesn't apply there - clouds, not orbital geometry,
+        # are what limits S2). S2 is not currently enabled in "sensors".
+        "post_months": 1,
         "post_direction": "backward",
         "scale": 10,                  # metres per pixel
         "aoi_buffer_deg": 0.005,      # padding so edge buildings get a patch
@@ -120,7 +161,7 @@ PREP = {
     },
 
     # ------------------------------------------------------------------
-    # Extra, UNLABELLED post windows either side of each assessment date.
+    # Extra, UNLABELLED post composites either side of each assessment date.
     # They exist only so the second-stage model can see a short time series
     # of CNN scores per building. No labels are needed and none of these
     # patches ever enter CNN training.
@@ -129,18 +170,21 @@ PREP = {
     # failed in 2021 a given relative orbit passes every 12 days, so 12 is the
     # finest grid on which consecutive points contain a different acquisition.
     #
-    # window_days is separate on purpose. With the default 1-month window a
-    # 12-day shift swaps roughly one scene in three, so neighbouring points
-    # are correlated but de-speckled; setting window_days = 12 makes each
-    # point a single acquisition, fully distinct but far noisier. Which is
-    # better is an empirical question - the XGB feature importances answer it.
-    # ------------------------------------------------------------------
+    # post_n_offset stays at 1 by design, not just for consistency with the
+    # labelled default: at step_days=12, offsets sit almost exactly on real
+    # acquisitions (the satellite's own cadence), so nearest-1 turns the
+    # whole 5-point series into a clean ladder of distinct, evenly-spaced,
+    # non-overlapping real observations - verified directly against Gaza's
+    # actual scene dates. A wider n here would let neighbouring offset
+    # points (and, worse, an offset and the labelled composite next to it)
+    # share a scene, which manufactures apparent "persistence" out of shared
+    # pixels rather than genuine signal.
     "temporal": {
         "enabled": True,
         "step_days": 12,
         "n_before": 2,
         "n_after": 2,
-        "window_days": None,   # None = same length as post_months
+        "post_n_offset": 1,
     },
 }
 
@@ -373,29 +417,48 @@ def list_experiments():
 
 
 def check_city_windows(city, dates=None):
-    """Flag assessment dates whose imagery windows are unusable.
+    """Flag assessment dates whose S1 search window is unusable.
+
+    The post composite now searches +/- post_search_days around each date
+    for the closest scenes (nearest_s1_post() in notebook 1), rather than
+    only looking backward. Three things can make a date unusable:
+
+    - Sentinel-1 has no data anywhere in the search window (too early);
+    - the search reaches back past war_start, so the "post" composite could
+      end up partly built from PRE-war scenes;
+    - the search for this date and for the NEXT registered date overlap, so
+      the two dates' composites could draw on the same scene.
 
     Returns [(date, reason), ...], empty when every date is fine. See the
-    CITY_REGISTRY comment for why these two conditions matter.
+    CITY_REGISTRY comment for why these matter.
     """
     im = PREP["imagery"]
     war = pd.Timestamp(CITY_REGISTRY[city]["war_start"])
     pre_start = war - pd.DateOffset(months=im["pre_months"])
+    search = pd.Timedelta(days=int(im["post_search_days"]))
     problems = []
     if pre_start < pd.Timestamp(S1_EARLIEST):
         problems.append((None, f"pre window starts {pre_start.date()}, before "
                                f"Sentinel-1 exists ({S1_EARLIEST})"))
-    for d in (dates or CITY_REGISTRY[city]["label_dates"]):
+
+    all_dates = sorted(dates or CITY_REGISTRY[city]["label_dates"])
+    for i, d in enumerate(all_dates):
         dt = pd.Timestamp(f"{d[:4]}-{d[4:6]}-{d[6:8]}")
-        length = pd.DateOffset(months=im["post_months"])
-        post_start = dt if im["post_direction"] == "forward" else dt - length
-        post_end = dt + length if im["post_direction"] == "forward" else dt
-        if post_end < pd.Timestamp(S1_EARLIEST):
-            problems.append((d, "no Sentinel-1 data at this date"))
-        elif post_start < war:
-            problems.append((d, f"post window starts {post_start.date()}, "
-                                f"before war_start {war.date()} - the pre-war "
-                                f"baseline would postdate the damage"))
+        if dt + search < pd.Timestamp(S1_EARLIEST):
+            problems.append((d, "no Sentinel-1 data within the search window"))
+        elif dt - search < war:
+            problems.append((d, f"the search window reaches back to "
+                                f"{(dt - search).date()}, before war_start "
+                                f"{war.date()} - the post composite could end "
+                                f"up using pre-war imagery. Narrow "
+                                f"post_search_days for this city."))
+        if i + 1 < len(all_dates):
+            nxt = pd.Timestamp(f"{all_dates[i + 1][:4]}-"
+                               f"{all_dates[i + 1][4:6]}-{all_dates[i + 1][6:8]}")
+            if dt + search > nxt - search:
+                problems.append((d, f"the search window overlaps the next "
+                                    f"assessment ({all_dates[i + 1]}) - narrow "
+                                    f"post_search_days for this city."))
     return problems
 
 
@@ -438,32 +501,43 @@ def offset_dates(date):
 
 
 def temporal_window_days():
-    """Length of an offset post window in days, or None to use post_months."""
-    return PREP["temporal"]["window_days"]
+    """S1 acquisition days averaged into each offset composite.
+
+    Name kept from the old window-based design: this value still flows
+    through every call site (notably notebook 2's part_source) as an opaque
+    file-naming discriminator, so nothing there needs to change even though
+    it now means a scene COUNT rather than a day count. See the PREP
+    ["temporal"] comment for why offsets stay at n=1 by design.
+    """
+    return PREP["temporal"]["post_n_offset"]
 
 
 def post_jobs(city, dates=None):
-    """Every post composite a city needs: [(date, window_days, is_labelled)].
+    """Every post composite a city needs: [(date, n, is_labelled)].
 
-    Deduplicated, because two assessment dates can generate the same offset
-    date, and ordered so notebook 1 exports the labelled dates first.
+    n is how many of the closest-in-time S1 acquisition days go into it
+    (nearest_s1_post() in notebook 1) - post_n_labelled for the labelled
+    dates, post_n_offset for their temporal offsets. Deduplicated, because
+    two assessment dates can generate the same offset date, and ordered so
+    notebook 1 exports the labelled dates first.
     """
     dates = dates or CITY_REGISTRY[city]["label_dates"]
-    win = temporal_window_days()
+    n_label = PREP["imagery"]["post_n_labelled"]
+    n_offset = temporal_window_days()
     jobs, seen = [], set()
-    for d in dates:                       # labelled dates first, default window
-        if (d, None) not in seen:
-            seen.add((d, None))
-            jobs.append((d, None, True))
+    for d in dates:                       # labelled dates first
+        if (d, n_label) not in seen:
+            seen.add((d, n_label))
+            jobs.append((d, n_label, True))
     if PREP["temporal"]["enabled"]:
         for d in dates:
             for off, od in offset_dates(d).items():
                 if off == 0:
                     continue
-                if (od, win) in seen:
+                if (od, n_offset) in seen:
                     continue
-                seen.add((od, win))
-                jobs.append((od, win, False))
+                seen.add((od, n_offset))
+                jobs.append((od, n_offset, False))
     return jobs
 
 
@@ -564,13 +638,28 @@ def prep_tag():
 
 
 def _pre_tag():
-    return f"pre{PREP['imagery']['pre_months']}m"
+    # "native" distinguishes this from older exports that censored all
+    # finite VV/VH values below -35 dB.
+    return f"pre{PREP['imagery']['pre_months']}m_native"
 
 
 def _post_tag(window_days=None):
-    im = PREP["imagery"]
-    w = f"{int(window_days)}d" if window_days else f"{im['post_months']}m"
-    return f"post_{im['post_direction']}{w}"
+    """Identifies which post-composite variant a file holds.
+
+    window_days is really an S1 acquisition-day COUNT now (see nearest_s1_post() in
+    notebook 1) - the parameter name is kept because post_raster_path,
+    post_patch_paths, post_arrays etc. all pass it straight through as an
+    opaque value, including from notebook 2, which never needed to change.
+    Falsy (None, 0) falls back to PREP["imagery"]["post_n_labelled"] - the
+    same "default variant" role None played under the old window scheme.
+
+    The "nearestN" format is deliberately unlike the old "backward1m" /
+    "12d" tags: old rasters and patches must never be silently reused under
+    the new compositing method, so their names cannot collide.
+    """
+    n = window_days if window_days else PREP["imagery"]["post_n_labelled"]
+    fallback = int(PREP["imagery"].get("post_fallback_dates", 0))
+    return f"post_nearest{int(n)}_fb{fallback}_native"
 
 
 def pre_raster_path(city, sensor):
@@ -584,6 +673,18 @@ def post_raster_path(city, date, sensor, window_days=None):
     os.makedirs(RASTER_DIR, exist_ok=True)
     return os.path.join(
         RASTER_DIR, f"{city.lower()}_{date}_{sensor}_{_post_tag(window_days)}.tif")
+
+
+def post_primary_raster_path(city, date, sensor, window_days=None):
+    """Unfilled primary post composite, retained for nodata diagnostics.
+
+    The model reads post_raster_path(), whose native nodata has been filled
+    from the configured fallback dates. This companion raster contains only
+    the closest acquisition(s), before fallback, so notebook 1 can measure
+    exactly how many pixels and building patches the fallback rescued.
+    """
+    path = post_raster_path(city, date, sensor, window_days)
+    return path[:-4] + "_primary.tif"
 
 
 def export_meta_path(city):
@@ -619,6 +720,65 @@ def write_export_meta(city, **kwargs):
     return meta
 
 
+# --------------------------------------------------------------------------
+# The S1 scene log: which real acquisition(s) actually went into each post
+# composite, and how far each sits from the date it was fetched for. Written
+# once per composite, at export time, so it survives independent of any
+# in-notebook printout - the only record of "what did nearest_s1_post()
+# actually pick" once a Colab session ends.
+# --------------------------------------------------------------------------
+
+def scene_log_path(city):
+    os.makedirs(RASTER_DIR, exist_ok=True)
+    return os.path.join(RASTER_DIR, f"{city.lower()}_s1_scene_log.csv")
+
+
+def append_scene_log(city, rows):
+    """Add rows (list of dicts) to the city's scene log, creating it if
+    needed. Call this only AFTER a composite's raster has been written
+    successfully - see the atomic-rename note in _download() - so a crashed
+    export never leaves a log entry for a raster that does not exist.
+    """
+    if not rows:
+        return scene_log_path(city)
+    path = scene_log_path(city)
+    df = pd.DataFrame(rows)
+    if os.path.exists(path):
+        df = pd.concat([pd.read_csv(path), df], ignore_index=True)
+    df = df.drop_duplicates()
+    df.to_csv(path, index=False)
+    return path
+
+
+def load_scene_log(city):
+    """The city's scene log as a DataFrame, or an empty one if none yet."""
+    path = scene_log_path(city)
+    if not os.path.exists(path):
+        return pd.DataFrame(columns=[
+            "city", "kind", "unosat_date", "offset_days", "target_date",
+            "post_variant", "source_role", "acquisition_day", "scene_id", "scene_date",
+            "days_from_target", "days_from_unosat"])
+    return pd.read_csv(path)
+
+
+def resolve_unosat_context(city, date):
+    """(unosat_date, offset_days) that a post-composite date stems from.
+
+    `date` is either a registered label date itself (offset_days=0) or one
+    of its temporal offsets (see offset_dates()). Raises if it matches
+    neither, which would mean CITY_REGISTRY and post_jobs() have drifted
+    apart - a bug, not a data problem.
+    """
+    if date in CITY_REGISTRY[city]["label_dates"]:
+        return date, 0
+    for unosat_date in CITY_REGISTRY[city]["label_dates"]:
+        for off, od in offset_dates(unosat_date).items():
+            if od == date:
+                return unosat_date, off
+    raise ValueError(f"{city} {date}: not a registered label date or a "
+                     f"temporal offset of one - check PREP['temporal'].")
+
+
 def buildings_path(city):
     """The canonical building table every patch array is aligned to."""
     os.makedirs(PROCESSED_DIR, exist_ok=True)
@@ -645,7 +805,7 @@ def post_patch_paths(city, date, window_days=None):
 # Writing patches.
 #
 # Patches go to an uncompressed .npy as float16. float16 because backscatter
-# in dB spans about -35 to +5, where it resolves ~0.01 dB, far finer than
+# in dB usually spans about -50 to +5, where it resolves ~0.01 dB, far finer than
 # radar speckle. Uncompressed because a .npz is a zip archive and a
 # compressed member has no fixed position on disk, so it cannot be
 # memory-mapped: reading one patch would mean decompressing the whole array.
@@ -1318,6 +1478,44 @@ class SpatialDropout(nn.Module):
 
     def forward(self, x):
         return self.drop(x)
+
+@register_model("base_cnn")
+class BaseCNN(nn.Module):
+    """The textbook small CNN, with nothing clever in it.
+
+        conv 3x3 -> BatchNorm -> ReLU -> MaxPool(2)     (depth times)
+        global average pool
+        dropout
+        linear -> 1 logit
+
+    That is the entire model. It exists as a CONTROL. tiny_cnn adds channel
+    dropout inside the stack, slower channel growth and a centre-cell
+    feature; siamese adds a shared encoder and an explicit pre/post
+    difference. Each of those is a claim that its extra structure earns its
+    place, and this is the model that claim has to beat.
+
+    No growth, head_dropout or use_centre knob on purpose: the point of a
+    control is that there is nothing in it to tune.
+
+    At the defaults with four input channels this is about 1.5k parameters
+    (296 + 16 in the first block, 1,168 + 32 in the second, 17 in the head).
+
+    Note this is what small_cnn already reduces to at width=8, depth=2 - the
+    difference is that those settings are baked in here under a name, rather
+    than being one point in a search space.
+    """
+
+    def __init__(self, n_channels, width=8, depth=2, dropout=0.2):
+        super().__init__()
+        chans = [n_channels] + [width * (2 ** i) for i in range(depth)]
+        self.features = nn.Sequential(
+            *[conv_block(chans[i], chans[i + 1]) for i in range(depth)])
+        self.head = nn.Sequential(
+            nn.AdaptiveAvgPool2d(1), nn.Flatten(),
+            nn.Dropout(dropout), nn.Linear(chans[-1], 1))
+
+    def forward(self, x):
+        return self.head(self.features(x)).squeeze(1)
 
 
 @register_model("tiny_cnn")
