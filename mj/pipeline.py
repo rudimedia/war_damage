@@ -96,6 +96,12 @@ PREP = {
     # which sensors to export: ["s1"] or ["s1", "s2"]
     "sensors": ["s1"],
 
+    # UNOSAT classes treated as positive damage. Notebook 0 reads this same
+    # setting when it builds the labels, and prep_tag() includes it in every
+    # processed filename so labels made with different class definitions can
+    # never silently share a canonical table or patch arrays.
+    "positive_damage_codes": (1, 2, 3),
+
     # "footprints" anchors patches on buildings, "grid" on regular cells
     "label_geometry": "footprints",
 
@@ -632,9 +638,15 @@ def load_labels(city, date, geometry=None):
 # --------------------------------------------------------------------------
 
 def prep_tag():
-    """Identifies the patch geometry and the building sample."""
+    """Identify the label definition, patch geometry and building sample."""
+    damage_codes = tuple(sorted({
+        int(code) for code in PREP["positive_damage_codes"]
+    }))
+    if not damage_codes:
+        raise ValueError("PREP['positive_damage_codes'] must not be empty")
+    label_tag = "lbl" + "-".join(map(str, damage_codes))
     return (f"p{PREP['patch_size']}_{PREP['label_geometry']}"
-            f"_n{PREP['n_sample']}_{''.join(PREP['sensors'])}")
+            f"_{label_tag}_n{PREP['n_sample']}_{''.join(PREP['sensors'])}")
 
 
 def _pre_tag():
