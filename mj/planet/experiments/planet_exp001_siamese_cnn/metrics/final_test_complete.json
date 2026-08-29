@@ -1,0 +1,78 @@
+{
+  "completed_utc": "2026-08-28T13:50:11Z",
+  "metrics": {
+    "F1": 0.7773103025433942,
+    "FN": 2424,
+    "FP": 8109,
+    "PR_AUC": 0.8809778763380495,
+    "ROC_AUC": 0.9120299264028581,
+    "TN": 26898,
+    "TP": 18383,
+    "balanced_accuracy": 0.8259306792665868,
+    "n": 55814,
+    "precision": 0.6939075947455836,
+    "prevalence": 0.37279177267352276,
+    "recall": 0.8835007449416062,
+    "specificity": 0.7683606135915674,
+    "threshold": 0.4801221489906311
+  },
+  "prediction_file": "final_test_predictions.parquet",
+  "selection": {
+    "checkpoint": "/content/drive/MyDrive/War-Damage-Detection/planet/experiments/planet_exp001_siamese_cnn/models/hpo.pt",
+    "run": "hpo",
+    "selected_utc": "2026-08-28T13:50:04Z",
+    "selection_metric": "validation_roc_auc",
+    "split": {
+      "bands": {
+        "stack": [
+          0.44,
+          0.55
+        ],
+        "test": [
+          0.0,
+          0.33
+        ],
+        "train": [
+          0.55,
+          1.0
+        ],
+        "val": [
+          0.33,
+          0.44
+        ]
+      },
+      "buffer_m": 0.0,
+      "counts": {
+        "stack": 22275,
+        "test": 55814,
+        "train": 88732,
+        "val": 22053
+      },
+      "latitude_thresholds": {
+        "stack": [
+          31.39471537464523,
+          31.439609221574184
+        ],
+        "test": [
+          31.23186548371756,
+          31.34849142062608
+        ],
+        "train": [
+          31.439609221574184,
+          31.58866204503486
+        ],
+        "val": [
+          31.34849142062608,
+          31.39471537464523
+        ]
+      },
+      "reference_rows": 203947,
+      "type": "latitude_quantile_bands"
+    },
+    "stacker": "/content/drive/MyDrive/War-Damage-Detection/planet/experiments/planet_exp001_siamese_cnn/models/hpo_xgb_spatial.joblib",
+    "threshold": 0.4801221489906311,
+    "validation_PR_AUC": 0.9574054007432704,
+    "validation_ROC_AUC": 0.9306182163066308,
+    "variant": "xgb_spatial"
+  }
+}

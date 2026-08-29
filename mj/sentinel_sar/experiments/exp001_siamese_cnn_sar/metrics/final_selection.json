@@ -1,0 +1,9 @@
+{
+  "experiment_name": "exp001_siamese_cnn_sar",
+  "run": "hpo",
+  "variant": "xgb_spatial_temporal",
+  "selection_metric": "mean_validation_ROC_AUC",
+  "selection_value": 0.8683058284755459,
+  "threshold_source": "pooled_validation_best_F1",
+  "threshold": 0.4070962071418762
+}

@@ -1,0 +1,9 @@
+variant,run,Gaza:0.33-0.44@20240503,Gaza:0.33-0.44@20240706,Gaza:0.33-0.44@20240906
+cnn,baseline,0.8719,0.8594,0.8423
+cnn,hpo,0.8765,0.8554,0.8423
+cnn+fixed_neighbor_rule,baseline,0.8737,0.8612,0.8433
+cnn+fixed_neighbor_rule,hpo,0.8784,0.8574,0.8436
+xgb_spatial,baseline,0.8759,0.8639,0.844
+xgb_spatial,hpo,0.8801,0.8606,0.8431
+xgb_spatial_temporal,baseline,0.8798,0.8687,0.8463
+xgb_spatial_temporal,hpo,0.8859,0.8687,0.8504

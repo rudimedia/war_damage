@@ -1,0 +1,58 @@
+{
+  "checkpoint": "/content/drive/MyDrive/War-Damage-Detection/planet/experiments/planet_exp001_base_cnn/models/hpo.pt",
+  "run": "hpo",
+  "selected_utc": "2026-08-29T09:28:09Z",
+  "selection_metric": "validation_roc_auc",
+  "split": {
+    "bands": {
+      "stack": [
+        0.44,
+        0.55
+      ],
+      "test": [
+        0.0,
+        0.33
+      ],
+      "train": [
+        0.55,
+        1.0
+      ],
+      "val": [
+        0.33,
+        0.44
+      ]
+    },
+    "buffer_m": 0.0,
+    "counts": {
+      "stack": 22275,
+      "test": 55814,
+      "train": 88732,
+      "val": 22053
+    },
+    "latitude_thresholds": {
+      "stack": [
+        31.39471537464523,
+        31.439609221574184
+      ],
+      "test": [
+        31.23186548371756,
+        31.34849142062608
+      ],
+      "train": [
+        31.439609221574184,
+        31.58866204503486
+      ],
+      "val": [
+        31.34849142062608,
+        31.39471537464523
+      ]
+    },
+    "reference_rows": 203947,
+    "type": "latitude_quantile_bands"
+  },
+  "stacker": "/content/drive/MyDrive/War-Damage-Detection/planet/experiments/planet_exp001_base_cnn/models/hpo_xgb_spatial.joblib",
+  "threshold": 0.6126962900161743,
+  "validation_PR_AUC": 0.9536995927402685,
+  "validation_ROC_AUC": 0.9300326586312426,
+  "variant": "xgb_spatial"
+}

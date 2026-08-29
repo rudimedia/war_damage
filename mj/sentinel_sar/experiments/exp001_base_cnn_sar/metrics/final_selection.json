@@ -1,0 +1,9 @@
+{
+  "experiment_name": "exp001_base_cnn_sar",
+  "run": "hpo",
+  "variant": "xgb_spatial_temporal",
+  "selection_metric": "mean_validation_ROC_AUC",
+  "selection_value": 0.8789540388219423,
+  "threshold_source": "pooled_validation_best_F1",
+  "threshold": 0.5480779409408569
+}

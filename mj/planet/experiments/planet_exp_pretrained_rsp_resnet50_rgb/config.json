@@ -1,0 +1,55 @@
+{
+  "augmentation": {
+    "brightness_jitter": 0.0,
+    "geometric": true
+  },
+  "bands": [
+    "R",
+    "G",
+    "B"
+  ],
+  "batch_size": 64,
+  "experiment_name": "planet_exp_pretrained_rsp_resnet50_rgb",
+  "normalization": {
+    "lower_percentile": 2.0,
+    "sample_patches": 20000,
+    "upper_percentile": 98.0
+  },
+  "num_workers": 2,
+  "phase1": {
+    "epochs": 20,
+    "learning_rate": 0.001,
+    "patience": 8,
+    "reduce_lr_patience": 4
+  },
+  "phase2": {
+    "epochs": 30,
+    "learning_rate": 1e-05,
+    "patience": 8,
+    "reduce_lr_patience": 4,
+    "trainable_backbone": "top"
+  },
+  "resize_to": 128,
+  "rsp_checkpoint": "/content/drive/MyDrive/War-Damage-Detection/planet/data/pretrained/rsp-resnet-50-ckpt.pth",
+  "seed": 0,
+  "selection_metric": "roc_auc",
+  "split": {
+    "stack": [
+      0.44,
+      0.55
+    ],
+    "test": [
+      0.0,
+      0.33
+    ],
+    "train": [
+      0.55,
+      1.0
+    ],
+    "val": [
+      0.33,
+      0.44
+    ]
+  },
+  "threshold_metric": "F1"
+}

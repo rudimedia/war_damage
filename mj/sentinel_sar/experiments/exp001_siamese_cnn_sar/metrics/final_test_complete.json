@@ -1,0 +1,19 @@
+{
+  "selection": {
+    "experiment_name": "exp001_siamese_cnn_sar",
+    "run": "hpo",
+    "variant": "xgb_spatial_temporal",
+    "selection_metric": "mean_validation_ROC_AUC",
+    "selection_value": 0.8683058284755459,
+    "threshold_source": "pooled_validation_best_F1",
+    "threshold": 0.4070962071418762
+  },
+  "regions": [
+    "Gaza:0.00-0.33@20240503",
+    "Gaza:0.00-0.33@20240706",
+    "Gaza:0.00-0.33@20240906"
+  ],
+  "metrics_file": "final_test_metrics.csv",
+  "confusion_file": "final_test_confusion_matrix.csv",
+  "completed_utc": "2026-08-28T13:21:10Z"
+}

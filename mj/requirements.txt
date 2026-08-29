@@ -1,0 +1,47 @@
+# Third-party dependencies for the notebooks in planet/, sentinel_sar/, and
+# shared/. Versions are unpinned to match how the notebooks themselves
+# install packages (plain `pip install -q ...`, no pins).
+#
+# google.colab is omitted: it is a virtual module only available inside
+# Google Colab and is not installable via pip.
+
+# Core data handling
+numpy
+pandas
+matplotlib
+
+# Geospatial
+geopandas
+rasterio
+shapely
+pyarrow
+mercantile
+pyogrio
+
+# Deep learning
+torch
+torchvision
+torchinfo
+
+# Classical ML / hyperparameter search
+scikit-learn
+xgboost
+optuna
+joblib
+
+# Google Earth Engine (sentinel_sar preprocessing)
+earthengine-api
+geemap
+geedim
+
+# GEE figure and interactive diagnostics (shared/3_interactive_map.ipynb)
+folium
+lonboard
+Pillow
+requests
+
+# Pretrained-model comparison (planet RSP ResNet-50 / EfficientNet notebooks)
+tensorflow
+
+# Progress bars (shared/0_build_labeled_footprints.ipynb)
+tqdm

@@ -1,0 +1,19 @@
+{
+  "bands": [
+    "R",
+    "G",
+    "B"
+  ],
+  "hi": [
+    3256.0,
+    2750.0,
+    2120.0
+  ],
+  "lo": [
+    997.0,
+    972.0,
+    655.0
+  ],
+  "sampled_training_rows": 20000,
+  "type": "shared_pre_post_training_percentiles"
+}

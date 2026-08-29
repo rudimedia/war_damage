@@ -1,0 +1,50 @@
+{
+  "buffer_m": 0.0,
+  "counts": {
+    "test": 55814,
+    "train": 88732,
+    "validation": 44328,
+    "validation_core": 22053,
+    "validation_extra": 22275
+  },
+  "latitude_thresholds": {
+    "stack": [
+      31.39471537464523,
+      31.439609221574184
+    ],
+    "test": [
+      31.23186548371756,
+      31.34849142062608
+    ],
+    "train": [
+      31.439609221574184,
+      31.58866204503486
+    ],
+    "val": [
+      31.34849142062608,
+      31.39471537464523
+    ]
+  },
+  "reference_rows": 203947,
+  "test": [
+    0.0,
+    0.33
+  ],
+  "train": [
+    0.55,
+    1.0
+  ],
+  "type": "latitude_bands_pretrained_no_stack",
+  "validation": [
+    0.33,
+    0.55
+  ],
+  "validation_core": [
+    0.33,
+    0.44
+  ],
+  "validation_extra_from_stack": [
+    0.44,
+    0.55
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "experiment_name": "exp001_siamese_cnn_sar",
+  "seed": 0,
+  "selection_metric": "roc_auc",
+  "features": {
+    "pre_event": true,
+    "post_event": true
+  },
+  "model": "siamese",
+  "model_params": {},
+  "split": {
+    "train": [
+      "Gaza:0.55-1.00@*"
+    ],
+    "stack": [
+      "Gaza:0.44-0.55@*"
+    ],
+    "val": [
+      "Gaza:0.33-0.44@*"
+    ],
+    "test": [
+      "Gaza:0.00-0.33@20240503",
+      "Gaza:0.00-0.33@20240706",
+      "Gaza:0.00-0.33@20240906"
+    ],
+    "holdout": [
+      "Raqqa@*",
+      "Mosul@*",
+      "Chernihiv@*",
+      "Rubizhne@*"
+    ]
+  },
+  "label_temporal": false,
+  "spatial_smoothing": {
+    "k": 8,
+    "weight": 0.3
+  },
+  "stacking": {
+    "enabled": true,
+    "ks": [
+      8,
+      32
+    ],
+    "spatial_features": [
+      "score_t0",
+      "k8_mean",
+      "k8_std",
+      "k32_mean",
+      "k32_std"
+    ],
+    "temporal_features": [
+      "score_t-24",
+      "score_t-12",
+      "score_t+12",
+      "score_t+24",
+      "pre_change",
+      "post_persistence"
+    ],
+    "n_estimators": 600,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "early_stopping_rounds": 40
+  },
+  "temporal_stacking": {
+    "enabled": true,
+    "offsets": [
+      -24,
+      -12,
+      0,
+      12,
+      24
+    ]
+  },
+  "hpo": {
+    "enabled": true,
+    "n_trials": 10,
+    "max_epochs": 25,
+    "train_subsample": 0.5,
+    "timeout_minutes": null,
+    "patience": 6
+  },
+  "batch_size": 128,
+  "learning_rate": 0.001,
+  "weight_decay": 0.0001,
+  "max_epochs": 120,
+  "early_stopping_patience": 10,
+  "num_workers": 2,
+  "predict_batch": 1024
+}

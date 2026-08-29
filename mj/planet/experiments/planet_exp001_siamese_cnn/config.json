@@ -1,0 +1,75 @@
+{
+  "augmentation": {
+    "brightness_jitter": 0.0,
+    "geometric": true
+  },
+  "bands": [
+    "B",
+    "G",
+    "R",
+    "NIR"
+  ],
+  "experiment_name": "planet_exp001_siamese_cnn",
+  "hpo": {
+    "enabled": true,
+    "max_epochs": 25,
+    "n_trials": 10,
+    "patience": 6,
+    "timeout_minutes": null,
+    "train_subsample": 0.5
+  },
+  "model": "siamese_cnn",
+  "model_params": {},
+  "normalization": {
+    "lower_percentile": 2.0,
+    "sample_patches": 20000,
+    "upper_percentile": 98.0
+  },
+  "seed": 0,
+  "selection_metric": "roc_auc",
+  "split": {
+    "stack": [
+      0.44,
+      0.55
+    ],
+    "test": [
+      0.0,
+      0.33
+    ],
+    "train": [
+      0.55,
+      1.0
+    ],
+    "val": [
+      0.33,
+      0.44
+    ]
+  },
+  "stacking": {
+    "early_stopping_rounds": 40,
+    "enabled": true,
+    "features": [
+      "score_t0",
+      "k8_mean",
+      "k8_std",
+      "k32_mean",
+      "k32_std"
+    ],
+    "ks": [
+      8,
+      32
+    ],
+    "learning_rate": 0.05,
+    "max_depth": 4,
+    "n_estimators": 600
+  },
+  "training": {
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "max_epochs": 120,
+    "num_workers": 2,
+    "patience": 10,
+    "predict_batch_size": 1024,
+    "weight_decay": 0.0001
+  }
+}

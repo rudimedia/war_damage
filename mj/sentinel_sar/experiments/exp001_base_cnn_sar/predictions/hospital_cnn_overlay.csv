@@ -1,0 +1,304 @@
+facility_id,facility,date,tier,split_band,nearest_footprint,match_dist_m,unmatched,cnn_prob_nearest,destroyed_nearest,frame_n,cnn_prob_frame_mean,frame_frac_destroyed,destroyed_frame,ground_truth_nearest
+0,Bait Hanoun Hospital,20240503,hospital,train,gaza_186049,10.6,False,0.7877,True,28,0.7501,1.0,True,1
+0,Bait Hanoun Hospital,20240706,hospital,train,gaza_186049,10.6,False,0.7797,True,28,0.6902,1.0,True,1
+0,Bait Hanoun Hospital,20240906,hospital,train,gaza_186049,10.6,False,0.6867,True,28,0.6268,1.0,True,1
+1,Al Andonise Hospital,20240503,hospital,train,gaza_179297,19.3,False,0.2933,True,18,0.4034,1.0,True,1
+1,Al Andonise Hospital,20240706,hospital,train,gaza_179297,19.3,False,0.4096,True,18,0.5271,1.0,True,1
+1,Al Andonise Hospital,20240906,hospital,train,gaza_179297,19.3,False,0.4322,True,18,0.493,1.0,True,1
+2,Al Naseer Pediatric Hospital,20240503,hospital,train,gaza_175626,10.7,False,0.3186,True,29,0.3689,0.828,True,1
+2,Al Naseer Pediatric Hospital,20240706,hospital,train,gaza_175626,10.7,False,0.3767,True,29,0.4229,0.966,True,1
+2,Al Naseer Pediatric Hospital,20240906,hospital,train,gaza_175626,10.7,False,0.4758,True,29,0.4777,1.0,True,1
+3,Al Rantesse Hospital,20240503,hospital,train,gaza_175978,12.6,False,0.6969,True,33,0.6674,1.0,True,1
+3,Al Rantesse Hospital,20240706,hospital,train,gaza_175978,12.6,False,0.6888,True,33,0.662,1.0,True,1
+3,Al Rantesse Hospital,20240906,hospital,train,gaza_175978,12.6,False,0.6854,True,33,0.6489,1.0,True,1
+4,Ophthalmic Hospital,20240503,hospital,train,gaza_177077,4.6,False,0.436,True,40,0.5512,1.0,True,0
+4,Ophthalmic Hospital,20240706,hospital,train,gaza_177077,4.6,False,0.5192,True,40,0.5566,1.0,True,0
+4,Ophthalmic Hospital,20240906,hospital,train,gaza_177077,4.6,False,0.6267,True,40,0.59,1.0,True,0
+5,مستشفي الطب النفسي,20240503,hospital,train,gaza_176703,21.4,False,0.6563,True,38,0.6061,1.0,True,1
+5,مستشفي الطب النفسي,20240706,hospital,train,gaza_176703,21.4,False,0.6751,True,38,0.6226,1.0,True,1
+5,مستشفي الطب النفسي,20240906,hospital,train,gaza_176703,21.4,False,0.6668,True,38,0.6205,1.0,True,1
+6,Al-Shifa Hospital,20240503,hospital,train,gaza_163205,10.1,False,0.5346,True,20,0.4809,1.0,True,0
+6,Al-Shifa Hospital,20240706,hospital,train,gaza_163205,10.1,False,0.558,True,20,0.5302,1.0,True,0
+6,Al-Shifa Hospital,20240906,hospital,train,gaza_163205,10.1,False,0.514,True,20,0.517,1.0,True,0
+7,مستشفي الدرة,20240503,hospital,train,gaza_154506,22.4,False,0.3265,True,11,0.377,1.0,True,1
+7,مستشفي الدرة,20240706,hospital,train,gaza_154506,22.4,False,0.2915,True,11,0.3108,0.909,True,1
+7,مستشفي الدرة,20240906,hospital,train,gaza_154506,22.4,False,0.2887,True,11,0.3355,1.0,True,1
+8,Al Harazen Hospital,20240503,hospital,train,gaza_135690,11.5,False,0.3887,True,37,0.5057,0.973,True,0
+8,Al Harazen Hospital,20240706,hospital,train,gaza_135690,11.5,False,0.5812,True,37,0.5998,1.0,True,0
+8,Al Harazen Hospital,20240906,hospital,train,gaza_135690,11.5,False,0.3513,True,37,0.499,1.0,True,0
+9,Al Aqsa Hospital,20240503,hospital,stack,gaza_100031,19.5,False,0.3744,True,41,0.2743,0.878,True,0
+9,Al Aqsa Hospital,20240706,hospital,stack,gaza_100031,19.5,False,0.1734,False,41,0.1441,0.195,False,0
+9,Al Aqsa Hospital,20240906,hospital,stack,gaza_100031,19.5,False,0.1952,False,41,0.1765,0.244,False,0
+10,مستشفي ناصر,20240503,hospital,test,gaza_65702,13.8,False,0.3405,True,25,0.3584,0.84,True,1
+10,مستشفي ناصر,20240706,hospital,test,gaza_65702,13.8,False,0.3811,True,25,0.4334,1.0,True,1
+10,مستشفي ناصر,20240906,hospital,test,gaza_65702,13.8,False,0.5755,True,25,0.6582,1.0,True,1
+11,مستشفي الأوروبي,20240503,hospital,test,gaza_30570,27.5,False,0.121,False,17,0.0917,0.0,False,0
+11,مستشفي الأوروبي,20240706,hospital,test,gaza_30570,27.5,False,0.0399,False,17,0.0354,0.0,False,0
+11,مستشفي الأوروبي,20240906,hospital,test,gaza_30570,27.5,False,0.0409,False,17,0.0505,0.0,False,0
+12,مستشفي أبو يوسف النجار,20240503,hospital,test,gaza_9251,10.6,False,0.034,False,48,0.035,0.0,False,0
+12,مستشفي أبو يوسف النجار,20240706,hospital,test,gaza_9251,10.6,False,0.1155,False,48,0.1349,0.208,False,0
+12,مستشفي أبو يوسف النجار,20240906,hospital,test,gaza_9251,10.6,False,0.1367,False,48,0.1474,0.188,False,0
+13,مستشفي الهلال الاماراتي,20240503,hospital,test,gaza_33261,13.6,False,0.0785,False,40,0.0827,0.0,False,0
+13,مستشفي الهلال الاماراتي,20240706,hospital,test,gaza_33261,13.6,False,0.0609,False,40,0.0804,0.0,False,0
+13,مستشفي الهلال الاماراتي,20240906,hospital,test,gaza_33261,13.6,False,0.579,True,40,0.6464,1.0,True,1
+14,مستشفى الكويتي التخصصي,20240503,hospital,test,gaza_18962,3.4,False,0.1086,False,45,0.1126,0.022,False,0
+14,مستشفى الكويتي التخصصي,20240706,hospital,test,gaza_18962,3.4,False,0.6648,True,45,0.634,1.0,True,1
+14,مستشفى الكويتي التخصصي,20240906,hospital,test,gaza_18962,3.4,False,0.6835,True,45,0.7024,1.0,True,1
+15,مستشفى دار السلام,20240503,hospital,val,gaza_70327,16.7,False,0.5499,True,20,0.5383,1.0,True,1
+15,مستشفى دار السلام,20240706,hospital,val,gaza_70327,16.7,False,0.7285,True,20,0.5645,1.0,True,1
+15,مستشفى دار السلام,20240906,hospital,val,gaza_70327,16.7,False,0.6518,True,20,0.6459,1.0,True,1
+16,مستشفى الأمل,20240503,hospital,val,gaza_70652,14.9,False,0.6124,True,30,0.6662,1.0,True,0
+16,مستشفى الأمل,20240706,hospital,val,gaza_70652,14.9,False,0.4748,True,30,0.5204,1.0,True,0
+16,مستشفى الأمل,20240906,hospital,val,gaza_70652,14.9,False,0.658,True,30,0.65,1.0,True,0
+17,مستشفى الخدمة العامة,20240503,hospital,train,gaza_151042,12.4,False,0.0899,False,33,0.0954,0.0,False,0
+17,مستشفى الخدمة العامة,20240706,hospital,train,gaza_151042,12.4,False,0.092,False,33,0.0923,0.0,False,0
+17,مستشفى الخدمة العامة,20240906,hospital,train,gaza_151042,12.4,False,0.2582,True,33,0.2407,0.909,True,0
+18,مستشفى القدس,20240503,hospital,train,gaza_147309,19.8,False,0.6176,True,27,0.5988,1.0,True,1
+18,مستشفى القدس,20240706,hospital,train,gaza_147309,19.8,False,0.6727,True,27,0.6382,1.0,True,1
+18,مستشفى القدس,20240906,hospital,train,gaza_147309,19.8,False,0.6548,True,27,0.5867,1.0,True,1
+19,مركز سان جون لطب وجراحة العيون,20240503,hospital,train,gaza_149650,7.2,False,0.1843,False,47,0.166,0.298,False,0
+19,مركز سان جون لطب وجراحة العيون,20240706,hospital,train,gaza_149650,7.2,False,0.2031,True,47,0.2038,0.489,False,0
+19,مركز سان جون لطب وجراحة العيون,20240906,hospital,train,gaza_149650,7.2,False,0.2523,True,47,0.2583,0.809,True,0
+20,مستشفى أصدقاء المريض ( الاستقبال و الجراحة ),20240503,hospital,train,gaza_156984,12.7,False,0.2746,True,24,0.3028,0.833,True,1
+20,مستشفى أصدقاء المريض ( الاستقبال و الجراحة ),20240706,hospital,train,gaza_156984,12.7,False,0.2869,True,24,0.3396,0.958,True,1
+20,مستشفى أصدقاء المريض ( الاستقبال و الجراحة ),20240906,hospital,train,gaza_156984,12.7,False,0.3666,True,24,0.3449,0.875,True,1
+21,مجمع الصحابة الطبي,20240503,hospital,train,gaza_156953,15.7,False,0.1595,False,50,0.173,0.3,False,0
+21,مجمع الصحابة الطبي,20240706,hospital,train,gaza_156953,15.7,False,0.1606,False,50,0.1825,0.32,False,0
+21,مجمع الصحابة الطبي,20240906,hospital,train,gaza_156953,15.7,False,0.1911,False,50,0.1871,0.42,False,0
+22,مستشفى الوفاء للتأهيل الطبي والجراحة التخصصية,20240503,hospital,train,gaza_126162,4.2,False,0.4353,True,15,0.4589,1.0,True,0
+22,مستشفى الوفاء للتأهيل الطبي والجراحة التخصصية,20240706,hospital,train,gaza_126162,4.2,False,0.3081,True,15,0.418,1.0,True,0
+22,مستشفى الوفاء للتأهيل الطبي والجراحة التخصصية,20240906,hospital,train,gaza_126162,4.2,False,0.4467,True,15,0.5209,1.0,True,0
+23,مستشفى العودة,20240503,hospital,train,gaza_177450,14.3,False,0.5976,True,62,0.5413,1.0,True,1
+23,مستشفى العودة,20240706,hospital,train,gaza_177450,14.3,False,0.5697,True,62,0.5712,1.0,True,1
+23,مستشفى العودة,20240906,hospital,train,gaza_177450,14.3,False,0.3827,True,62,0.3628,1.0,True,1
+24,مستشفى الكرامة التخصصي,20240503,hospital,train,gaza_190235,7.9,False,0.541,True,24,0.5271,1.0,True,1
+24,مستشفى الكرامة التخصصي,20240706,hospital,train,gaza_190235,7.9,False,0.5572,True,24,0.447,1.0,True,1
+24,مستشفى الكرامة التخصصي,20240906,hospital,train,gaza_190235,7.9,False,0.6087,True,24,0.5459,1.0,True,1
+25,مستشفى الجزائري,20240503,hospital,test,gaza_46844,21.3,False,0.4187,True,37,0.2443,0.649,True,1
+25,مستشفى الجزائري,20240706,hospital,test,gaza_46844,21.3,False,0.3065,True,37,0.2775,0.73,True,1
+25,مستشفى الجزائري,20240906,hospital,test,gaza_46844,21.3,False,0.3181,True,37,0.2542,0.703,True,1
+26,Jordanian Hospital,20240503,hospital,train,gaza_145977,9.4,False,0.212,True,32,0.1948,0.438,False,1
+26,Jordanian Hospital,20240706,hospital,train,gaza_145977,9.4,False,0.2743,True,32,0.2303,0.625,True,1
+26,Jordanian Hospital,20240906,hospital,train,gaza_145977,9.4,False,0.3829,True,32,0.3957,1.0,True,1
+27,Balsam Hospital,20240503,hospital,train,gaza_195024,8.6,False,0.3905,True,8,0.4034,1.0,True,1
+27,Balsam Hospital,20240706,hospital,train,gaza_195024,8.6,False,0.3337,True,8,0.3324,1.0,True,1
+27,Balsam Hospital,20240906,hospital,train,gaza_195024,8.6,False,0.3645,True,8,0.4067,1.0,True,1
+28,Bani Suhaila Martyrs Center,20240503,primary,test,gaza_62345,23.5,False,0.4717,True,36,0.6029,1.0,True,1
+28,Bani Suhaila Martyrs Center,20240706,primary,test,gaza_62345,23.5,False,0.3385,True,36,0.5484,1.0,True,1
+28,Bani Suhaila Martyrs Center,20240906,primary,test,gaza_62345,23.5,False,0.3461,True,36,0.507,1.0,True,1
+29,Abasan Alkabeera health center,20240503,primary,test,gaza_42356,17.0,False,0.0375,False,31,0.0416,0.0,False,0
+29,Abasan Alkabeera health center,20240706,primary,test,gaza_42356,17.0,False,0.0339,False,31,0.0503,0.0,False,0
+29,Abasan Alkabeera health center,20240906,primary,test,gaza_42356,17.0,False,0.0329,False,31,0.0386,0.0,False,0
+30,Abasan Alsageera health center (Aljadeeda),20240503,primary,test,gaza_52482,8.9,False,0.6652,True,12,0.6275,1.0,True,1
+30,Abasan Alsageera health center (Aljadeeda),20240706,primary,test,gaza_52482,8.9,False,0.5214,True,12,0.4765,1.0,True,1
+30,Abasan Alsageera health center (Aljadeeda),20240906,primary,test,gaza_52482,8.9,False,0.6364,True,12,0.5915,1.0,True,1
+31,Qararah Health Care Center,20240503,primary,val,gaza_82546,1.0,False,0.6723,True,39,0.6077,1.0,True,1
+31,Qararah Health Care Center,20240706,primary,val,gaza_82546,1.0,False,0.5176,True,39,0.5598,1.0,True,1
+31,Qararah Health Care Center,20240906,primary,val,gaza_82546,1.0,False,0.6452,True,39,0.6456,1.0,True,1
+32,Old Nussairat Health Center,20240503,primary,train,gaza_116651,5.4,False,0.0654,False,62,0.0816,0.0,False,0
+32,Old Nussairat Health Center,20240706,primary,train,gaza_116651,5.4,False,0.1184,False,62,0.101,0.0,False,0
+32,Old Nussairat Health Center,20240906,primary,train,gaza_116651,5.4,False,0.1086,False,62,0.1225,0.0,False,0
+33,Buraij Central Health Center (the old one),20240503,primary,train,gaza_117039,18.9,False,0.2754,True,7,0.2139,0.429,False,1
+33,Buraij Central Health Center (the old one),20240706,primary,train,gaza_117039,18.9,False,0.1322,False,7,0.1215,0.0,False,1
+33,Buraij Central Health Center (the old one),20240906,primary,train,gaza_117039,18.9,False,0.1772,False,7,0.1527,0.143,False,1
+34,Zawaida Health Care Center,20240503,primary,stack,gaza_107814,14.9,False,0.0736,False,32,0.0427,0.0,False,0
+34,Zawaida Health Care Center,20240706,primary,stack,gaza_107814,14.9,False,0.1381,False,32,0.1038,0.0,False,0
+34,Zawaida Health Care Center,20240906,primary,stack,gaza_107814,14.9,False,0.2395,True,32,0.1772,0.344,False,0
+35,Nusairat Martyrs Center,20240503,primary,train,gaza_115649,10.0,False,0.0458,False,44,0.0702,0.0,False,0
+35,Nusairat Martyrs Center,20240706,primary,train,gaza_115649,10.0,False,0.0983,False,44,0.1118,0.0,False,0
+35,Nusairat Martyrs Center,20240906,primary,train,gaza_115649,10.0,False,0.1634,False,44,0.231,0.591,True,0
+36,Tal Elsultan Martyrs Health Center,20240503,primary,test,gaza_31746,19.9,False,0.0465,False,59,0.075,0.0,False,0
+36,Tal Elsultan Martyrs Health Center,20240706,primary,test,gaza_31746,19.9,False,0.1688,False,59,0.4148,0.729,True,1
+36,Tal Elsultan Martyrs Health Center,20240906,primary,test,gaza_31746,19.9,False,0.8668,True,59,0.8482,1.0,True,1
+37,Jabalia Martyrs Health Center,20240503,primary,train,gaza_174719,4.8,False,0.4539,True,55,0.5049,1.0,True,1
+37,Jabalia Martyrs Health Center,20240706,primary,train,gaza_174719,4.8,False,0.4216,True,55,0.4195,1.0,True,1
+37,Jabalia Martyrs Health Center,20240906,primary,train,gaza_174719,4.8,False,0.6469,True,55,0.6068,1.0,True,1
+38,Albaraka Health Clinic,20240503,primary,stack,gaza_90801,1.9,False,0.0263,False,32,0.055,0.0,False,0
+38,Albaraka Health Clinic,20240706,primary,stack,gaza_90801,1.9,False,0.1519,False,32,0.2346,0.625,True,0
+38,Albaraka Health Clinic,20240906,primary,stack,gaza_90801,1.9,False,0.0845,False,32,0.122,0.0,False,0
+39,Khanyounis Martyrs Health Center,20240503,primary,test,gaza_63895,14.3,False,0.7666,True,24,0.7746,1.0,True,1
+39,Khanyounis Martyrs Health Center,20240706,primary,test,gaza_63895,14.3,False,0.5475,True,24,0.6576,1.0,True,1
+39,Khanyounis Martyrs Health Center,20240906,primary,test,gaza_63895,14.3,False,0.5693,True,24,0.6547,1.0,True,1
+40,Deir Elbalah clinic,20240503,primary,stack,gaza_97998,11.6,False,0.095,False,43,0.0827,0.0,False,0
+40,Deir Elbalah clinic,20240706,primary,stack,gaza_97998,11.6,False,0.1705,False,43,0.106,0.0,False,0
+40,Deir Elbalah clinic,20240906,primary,stack,gaza_97998,11.6,False,0.0929,False,43,0.0724,0.0,False,0
+41,Sheikh Radwan Martyrs Health Center,20240503,primary,train,gaza_175893,5.7,False,0.2771,True,59,0.297,1.0,True,0
+41,Sheikh Radwan Martyrs Health Center,20240706,primary,train,gaza_175893,5.7,False,0.2955,True,59,0.3205,1.0,True,0
+41,Sheikh Radwan Martyrs Health Center,20240906,primary,train,gaza_175893,5.7,False,0.2802,True,59,0.3069,1.0,True,0
+42,Alsourani Health Center,20240503,primary,train,gaza_144675,14.9,False,0.7362,True,32,0.7134,1.0,True,1
+42,Alsourani Health Center,20240706,primary,train,gaza_144675,14.9,False,0.7478,True,32,0.7137,1.0,True,1
+42,Alsourani Health Center,20240906,primary,train,gaza_144675,14.9,False,0.6251,True,32,0.6132,1.0,True,1
+43,Sabah Alharzeen Health Center,20240503,primary,train,gaza_143205,2.4,False,0.584,True,44,0.6613,1.0,True,1
+43,Sabah Alharzeen Health Center,20240706,primary,train,gaza_143205,2.4,False,0.7154,True,44,0.6972,1.0,True,1
+43,Sabah Alharzeen Health Center,20240906,primary,train,gaza_143205,2.4,False,0.8148,True,44,0.8229,1.0,True,1
+44,Rimal Martyrs Health Center,20240503,primary,train,gaza_158499,2.0,False,0.0903,False,18,0.1065,0.111,False,0
+44,Rimal Martyrs Health Center,20240706,primary,train,gaza_158499,2.0,False,0.1278,False,18,0.1673,0.278,False,0
+44,Rimal Martyrs Health Center,20240906,primary,train,gaza_158499,2.0,False,0.1359,False,18,0.1305,0.167,False,0
+45,Daraj Martyrs Health Center,20240503,primary,train,gaza_153113,3.6,False,0.087,False,54,0.0767,0.0,False,0
+45,Daraj Martyrs Health Center,20240706,primary,train,gaza_153113,3.6,False,0.0605,False,54,0.0618,0.0,False,0
+45,Daraj Martyrs Health Center,20240906,primary,train,gaza_153113,3.6,False,0.0603,False,54,0.0621,0.0,False,0
+46,Zaitoun Martyrs Health Center,20240503,primary,train,gaza_135524,6.2,False,0.5476,True,58,0.5091,0.966,True,0
+46,Zaitoun Martyrs Health Center,20240706,primary,train,gaza_135524,6.2,False,0.6643,True,58,0.6134,1.0,True,1
+46,Zaitoun Martyrs Health Center,20240906,primary,train,gaza_135524,6.2,False,0.822,True,58,0.6894,1.0,True,1
+47,Ezbet Beit Hanoun health center,20240503,primary,train,gaza_194854,46.8,False,0.956,True,6,0.9125,1.0,True,1
+47,Ezbet Beit Hanoun health center,20240706,primary,train,gaza_194854,46.8,False,0.8953,True,6,0.8076,1.0,True,1
+47,Ezbet Beit Hanoun health center,20240906,primary,train,gaza_194854,46.8,False,0.9492,True,6,0.8922,1.0,True,1
+48,Alqoba Health Center,20240503,primary,train,gaza_128689,1.9,False,0.51,True,19,0.5542,1.0,True,1
+48,Alqoba Health Center,20240706,primary,train,gaza_128689,1.9,False,0.5767,True,19,0.6119,1.0,True,1
+48,Alqoba Health Center,20240906,primary,train,gaza_128689,1.9,False,0.7355,True,19,0.783,1.0,True,1
+49,Physically disabled Health clinic,20240503,primary,test,gaza_37992,6.5,False,0.0658,False,27,0.0577,0.0,False,0
+49,Physically disabled Health clinic,20240706,primary,test,gaza_37992,6.5,False,0.0948,False,27,0.1043,0.0,False,0
+49,Physically disabled Health clinic,20240906,primary,test,gaza_37992,6.5,False,0.6716,True,27,0.701,1.0,True,1
+50,Rafah Martyrs Health Center,20240503,primary,test,gaza_9562,3.2,False,0.0735,False,77,0.0504,0.0,False,0
+50,Rafah Martyrs Health Center,20240706,primary,test,gaza_9562,3.2,False,0.4104,True,77,0.3273,0.714,True,0
+50,Rafah Martyrs Health Center,20240906,primary,test,gaza_9562,3.2,False,0.3272,True,77,0.2526,0.636,True,0
+51,Mughraqa Health Center,20240503,primary,train,gaza_124541,18.9,False,0.4376,True,14,0.4839,1.0,True,1
+51,Mughraqa Health Center,20240706,primary,train,gaza_124541,18.9,False,0.6718,True,14,0.6611,1.0,True,1
+51,Mughraqa Health Center,20240906,primary,train,gaza_124541,18.9,False,0.8784,True,14,0.8515,1.0,True,1
+52,The Western Nussairat Center,20240503,primary,train,gaza_122571,7.8,False,0.0884,False,55,0.172,0.4,False,1
+52,The Western Nussairat Center,20240706,primary,train,gaza_122571,7.8,False,0.1144,False,55,0.2478,0.6,True,1
+52,The Western Nussairat Center,20240906,primary,train,gaza_122571,7.8,False,0.244,True,55,0.3547,0.836,True,1
+53,Alsawarha Health Center (Alkhawalda),20240503,primary,stack,gaza_111233,6.9,False,0.0224,False,47,0.0283,0.0,False,0
+53,Alsawarha Health Center (Alkhawalda),20240706,primary,stack,gaza_111233,6.9,False,0.066,False,47,0.0822,0.043,False,0
+53,Alsawarha Health Center (Alkhawalda),20240906,primary,stack,gaza_111233,6.9,False,0.0234,False,47,0.026,0.0,False,0
+54,Hala Alshawa Health Center (Zaiton),20240503,primary,train,gaza_129528,0.4,False,0.9221,True,42,0.8513,1.0,True,1
+54,Hala Alshawa Health Center (Zaiton),20240706,primary,train,gaza_129528,0.4,False,0.8919,True,42,0.8309,1.0,True,1
+54,Hala Alshawa Health Center (Zaiton),20240906,primary,train,gaza_129528,0.4,False,0.9269,True,42,0.8835,1.0,True,1
+55,Alfokhary Health Center,20240503,primary,test,gaza_29115,22.5,False,0.0486,False,14,0.0366,0.0,False,0
+55,Alfokhary Health Center,20240706,primary,test,gaza_29115,22.5,False,0.187,False,14,0.1093,0.071,False,0
+55,Alfokhary Health Center,20240906,primary,test,gaza_29115,22.5,False,0.2743,True,14,0.1769,0.429,False,0
+56,Khaldia Alagha Health Care center,20240503,primary,test,gaza_41368,14.4,False,0.03,False,13,0.0387,0.0,False,0
+56,Khaldia Alagha Health Care center,20240706,primary,test,gaza_41368,14.4,False,0.0258,False,13,0.0251,0.0,False,0
+56,Khaldia Alagha Health Care center,20240906,primary,test,gaza_41368,14.4,False,0.0687,False,13,0.0696,0.0,False,0
+57,Jouret Allout Health Care Center,20240503,primary,test,gaza_54257,1.4,False,0.0353,False,62,0.0399,0.0,False,0
+57,Jouret Allout Health Care Center,20240706,primary,test,gaza_54257,1.4,False,0.0847,False,62,0.0948,0.0,False,0
+57,Jouret Allout Health Care Center,20240906,primary,test,gaza_54257,1.4,False,0.0472,False,62,0.0527,0.0,False,0
+58,Khozaa' Health Care Center,20240503,primary,test,gaza_35666,10.2,False,0.1771,False,47,0.24,0.596,True,1
+58,Khozaa' Health Care Center,20240706,primary,test,gaza_35666,10.2,False,0.1434,False,47,0.1675,0.234,False,1
+58,Khozaa' Health Care Center,20240906,primary,test,gaza_35666,10.2,False,0.2235,True,47,0.2488,0.702,True,1
+59,Mossader Health Care center,20240503,primary,stack,gaza_97466,2.5,False,0.0075,False,32,0.0121,0.0,False,0
+59,Mossader Health Care center,20240706,primary,stack,gaza_97466,2.5,False,0.0313,False,32,0.0236,0.0,False,0
+59,Mossader Health Care center,20240906,primary,stack,gaza_97466,2.5,False,0.0307,False,32,0.0437,0.0,False,0
+60,Wadi Alsalqaa' Health Care center,20240503,primary,val,gaza_88674,3.7,False,0.0093,False,29,0.0176,0.0,False,0
+60,Wadi Alsalqaa' Health Care center,20240706,primary,val,gaza_88674,3.7,False,0.0646,False,29,0.0877,0.0,False,0
+60,Wadi Alsalqaa' Health Care center,20240906,primary,val,gaza_88674,3.7,False,0.579,True,29,0.5854,1.0,True,1
+61,Maghazi Health Center,20240503,primary,stack,gaza_103652,8.7,False,0.2726,True,35,0.1996,0.4,False,0
+61,Maghazi Health Center,20240706,primary,stack,gaza_103652,8.7,False,0.442,True,35,0.3966,1.0,True,0
+61,Maghazi Health Center,20240906,primary,stack,gaza_103652,8.7,False,0.2308,True,35,0.2201,0.514,True,0
+62,Hiker Aljamea' Health Center,20240503,primary,stack,gaza_93454,7.7,False,0.0647,False,57,0.0734,0.0,False,0
+62,Hiker Aljamea' Health Center,20240706,primary,stack,gaza_93454,7.7,False,0.0711,False,57,0.0783,0.035,False,0
+62,Hiker Aljamea' Health Center,20240906,primary,stack,gaza_93454,7.7,False,0.1424,False,57,0.141,0.105,False,0
+63,New Beit Lahia Healh Center-Alshaymaa',20240503,primary,train,gaza_200582,5.3,False,0.2007,True,27,0.232,0.667,True,0
+63,New Beit Lahia Healh Center-Alshaymaa',20240706,primary,train,gaza_200582,5.3,False,0.2084,True,27,0.2627,0.704,True,0
+63,New Beit Lahia Healh Center-Alshaymaa',20240906,primary,train,gaza_200582,5.3,False,0.4402,True,27,0.4361,1.0,True,0
+64,Alhoreya Medical Center,20240503,primary,train,gaza_155886,9.2,False,0.3486,True,33,0.328,0.939,True,1
+64,Alhoreya Medical Center,20240706,primary,train,gaza_155886,9.2,False,0.4605,True,33,0.3495,1.0,True,1
+64,Alhoreya Medical Center,20240906,primary,train,gaza_155886,9.2,False,0.4847,True,33,0.4379,1.0,True,1
+65,Alrahma Health Center,20240503,primary,train,gaza_137005,15.4,False,0.7888,True,44,0.7707,1.0,True,1
+65,Alrahma Health Center,20240706,primary,train,gaza_137005,15.4,False,0.8286,True,44,0.7681,1.0,True,1
+65,Alrahma Health Center,20240906,primary,train,gaza_137005,15.4,False,0.7701,True,44,0.7195,1.0,True,1
+66,Physically disabled Health Center,20240503,primary,train,gaza_137301,8.8,False,0.474,True,24,0.51,1.0,True,1
+66,Physically disabled Health Center,20240706,primary,train,gaza_137301,8.8,False,0.7338,True,24,0.6897,1.0,True,1
+66,Physically disabled Health Center,20240906,primary,train,gaza_137301,8.8,False,0.7029,True,24,0.6747,1.0,True,1
+67,New Buraij Health Center,20240503,primary,stack,gaza_111911,9.2,False,0.0649,False,46,0.095,0.0,False,0
+67,New Buraij Health Center,20240706,primary,stack,gaza_111911,9.2,False,0.1067,False,46,0.1373,0.109,False,0
+67,New Buraij Health Center,20240906,primary,stack,gaza_111911,9.2,False,0.1306,False,46,0.1412,0.0,False,0
+68,Beach Martyrs Health Center,20240503,primary,train,gaza_188195,7.2,False,0.8562,True,44,0.8156,1.0,True,1
+68,Beach Martyrs Health Center,20240706,primary,train,gaza_188195,7.2,False,0.8582,True,44,0.843,1.0,True,1
+68,Beach Martyrs Health Center,20240906,primary,train,gaza_188195,7.2,False,0.8538,True,44,0.8398,1.0,True,1
+69,Alfalah Health Center,20240503,primary,train,gaza_150636,10.1,False,0.2092,True,41,0.2848,0.829,True,1
+69,Alfalah Health Center,20240706,primary,train,gaza_150636,10.1,False,0.217,True,41,0.3246,0.805,True,1
+69,Alfalah Health Center,20240906,primary,train,gaza_150636,10.1,False,0.3085,True,41,0.3559,0.927,True,1
+70,Alsalam Health Center,20240503,primary,train,gaza_149804,8.8,False,0.1556,False,47,0.1905,0.34,False,1
+70,Alsalam Health Center,20240706,primary,train,gaza_149804,8.8,False,0.1756,False,47,0.1745,0.234,False,1
+70,Alsalam Health Center,20240906,primary,train,gaza_149804,8.8,False,0.1316,False,47,0.1701,0.255,False,1
+71,Jamila Ashi Health Care Center,20240503,primary,train,gaza_194822,43.6,False,0.4806,True,10,0.4519,1.0,True,1
+71,Jamila Ashi Health Care Center,20240706,primary,train,gaza_194822,43.6,False,0.335,True,10,0.3065,0.8,True,1
+71,Jamila Ashi Health Care Center,20240906,primary,train,gaza_194822,43.6,False,0.4736,True,10,0.5041,1.0,True,1
+72,Beit Hanoun Martyrs Health Center,20240503,primary,train,gaza_185192,16.1,False,0.6876,True,42,0.6387,1.0,True,1
+72,Beit Hanoun Martyrs Health Center,20240706,primary,train,gaza_185192,16.1,False,0.6591,True,42,0.6369,1.0,True,1
+72,Beit Hanoun Martyrs Health Center,20240906,primary,train,gaza_185192,16.1,False,0.5076,True,42,0.5082,1.0,True,1
+73,Abu Shbak Health Center,20240503,primary,train,gaza_159416,15.1,False,0.1982,True,30,0.2527,0.567,True,1
+73,Abu Shbak Health Center,20240706,primary,train,gaza_159416,15.1,False,0.2496,True,30,0.2968,0.867,True,1
+73,Abu Shbak Health Center,20240906,primary,train,gaza_159416,15.1,False,0.4866,True,30,0.4563,1.0,True,1
+74,Atatra and Sefa Health Center,20240503,primary,train,gaza_199444,19.2,False,0.3728,True,20,0.2775,0.9,True,1
+74,Atatra and Sefa Health Center,20240706,primary,train,gaza_199444,19.2,False,0.4896,True,20,0.3697,1.0,True,1
+74,Atatra and Sefa Health Center,20240906,primary,train,gaza_199444,19.2,False,0.4494,True,20,0.4087,1.0,True,1
+75,Hala Shawwa Health Care center,20240503,primary,train,gaza_193388,12.4,False,0.4504,True,50,0.449,1.0,True,1
+75,Hala Shawwa Health Care center,20240706,primary,train,gaza_193388,12.4,False,0.6748,True,50,0.5568,1.0,True,1
+75,Hala Shawwa Health Care center,20240906,primary,train,gaza_193388,12.4,False,0.6976,True,50,0.5684,1.0,True,1
+76,Shoka Health Care center,20240503,primary,test,gaza_1449,5.9,False,0.0135,False,22,0.0164,0.0,False,0
+76,Shoka Health Care center,20240706,primary,test,gaza_1449,5.9,False,0.1955,False,22,0.1638,0.273,False,1
+76,Shoka Health Care center,20240906,primary,test,gaza_1449,5.9,False,0.3964,True,22,0.4168,1.0,True,1
+77,Shaboura Martyrs Center,20240503,primary,test,gaza_24800,22.0,False,0.0405,False,15,0.0524,0.0,False,0
+77,Shaboura Martyrs Center,20240706,primary,test,gaza_24800,22.0,False,0.0404,False,15,0.0396,0.0,False,0
+77,Shaboura Martyrs Center,20240906,primary,test,gaza_24800,22.0,False,0.0434,False,15,0.0351,0.0,False,0
+78,Alzanna Health Care center,20240503,primary,val,gaza_74871,6.9,False,0.4763,True,14,0.488,1.0,True,1
+78,Alzanna Health Care center,20240706,primary,val,gaza_74871,6.9,False,0.591,True,14,0.584,1.0,True,1
+78,Alzanna Health Care center,20240906,primary,val,gaza_74871,6.9,False,0.6306,True,14,0.5917,1.0,True,1
+79,Jabalia UNRWA Clinic,20240503,primary,train,gaza_174330,4.2,False,0.3124,True,48,0.2409,0.854,True,0
+79,Jabalia UNRWA Clinic,20240706,primary,train,gaza_174330,4.2,False,0.6012,True,48,0.6338,1.0,True,1
+79,Jabalia UNRWA Clinic,20240906,primary,train,gaza_174330,4.2,False,0.7289,True,48,0.7041,1.0,True,1
+80,Beit Hanoun UNRWA clinic,20240503,primary,train,gaza_188307,3.2,False,0.8781,True,23,0.8482,1.0,True,1
+80,Beit Hanoun UNRWA clinic,20240706,primary,train,gaza_188307,3.2,False,0.8112,True,23,0.8196,1.0,True,1
+80,Beit Hanoun UNRWA clinic,20240906,primary,train,gaza_188307,3.2,False,0.8744,True,23,0.8438,1.0,True,1
+81,Nusairat Health Center,20240503,primary,train,gaza_117844,2.0,False,0.0655,False,43,0.0839,0.0,False,0
+81,Nusairat Health Center,20240706,primary,train,gaza_117844,2.0,False,0.1074,False,43,0.1244,0.0,False,0
+81,Nusairat Health Center,20240906,primary,train,gaza_117844,2.0,False,0.1051,False,43,0.1076,0.0,False,0
+82,Almaghazi,20240503,primary,stack,gaza_100159,25.2,False,0.1331,False,32,0.1496,0.219,False,0
+82,Almaghazi,20240706,primary,stack,gaza_100159,25.2,False,0.1862,False,32,0.2334,0.531,True,0
+82,Almaghazi,20240906,primary,stack,gaza_100159,25.2,False,0.2163,True,32,0.2723,0.906,True,0
+83,Albureij Health Center,20240503,primary,stack,gaza_111463,10.9,False,0.7199,True,55,0.5774,1.0,True,1
+83,Albureij Health Center,20240706,primary,stack,gaza_111463,10.9,False,0.6811,True,55,0.6636,1.0,True,1
+83,Albureij Health Center,20240906,primary,stack,gaza_111463,10.9,False,0.7358,True,55,0.7346,1.0,True,1
+84,West Nuseirat Health Center,20240503,primary,train,gaza_122571,11.0,False,0.0884,False,52,0.1545,0.327,False,1
+84,West Nuseirat Health Center,20240706,primary,train,gaza_122571,11.0,False,0.1144,False,52,0.207,0.5,True,1
+84,West Nuseirat Health Center,20240906,primary,train,gaza_122571,11.0,False,0.244,True,52,0.3149,0.75,True,1
+85,Deir Elbalah health center,20240503,primary,stack,gaza_103838,9.3,False,0.0496,False,30,0.0793,0.0,False,0
+85,Deir Elbalah health center,20240706,primary,stack,gaza_103838,9.3,False,0.08,False,30,0.1176,0.0,False,0
+85,Deir Elbalah health center,20240906,primary,stack,gaza_103838,9.3,False,0.1073,False,30,0.1597,0.2,False,0
+86,Ma'en Clinic,20240503,primary,test,gaza_47629,0.4,False,0.1559,False,33,0.1596,0.273,False,0
+86,Ma'en Clinic,20240706,primary,test,gaza_47629,0.4,False,0.0791,False,33,0.1137,0.0,False,0
+86,Ma'en Clinic,20240906,primary,test,gaza_47629,0.4,False,0.0911,False,33,0.0962,0.0,False,0
+87,Khanyounis Health Care center,20240503,primary,val,gaza_68612,17.7,False,0.603,True,72,0.5911,1.0,True,1
+87,Khanyounis Health Care center,20240706,primary,val,gaza_68612,17.7,False,0.3017,True,72,0.3725,1.0,True,1
+87,Khanyounis Health Care center,20240906,primary,val,gaza_68612,17.7,False,0.3612,True,72,0.4804,1.0,True,1
+88,Japanese clinic,20240503,primary,val,gaza_77902,10.7,False,0.4779,True,26,0.5853,1.0,True,0
+88,Japanese clinic,20240706,primary,val,gaza_77902,10.7,False,0.1478,False,26,0.2091,0.5,True,0
+88,Japanese clinic,20240906,primary,val,gaza_77902,10.7,False,0.248,True,26,0.3869,0.846,True,0
+89,Rafah Health Care Center-UNRWA,20240503,primary,test,gaza_13881,15.1,False,0.0723,False,68,0.0765,0.0,False,0
+89,Rafah Health Care Center-UNRWA,20240706,primary,test,gaza_13881,15.1,False,0.7776,True,68,0.7702,1.0,True,1
+89,Rafah Health Care Center-UNRWA,20240906,primary,test,gaza_13881,15.1,False,0.6771,True,68,0.794,1.0,True,1
+90,Naser Health Center,20240503,primary,train,gaza_166817,13.3,False,0.3525,True,44,0.3258,0.932,True,0
+90,Naser Health Center,20240706,primary,train,gaza_166817,13.3,False,0.3625,True,44,0.3321,0.932,True,0
+90,Naser Health Center,20240906,primary,train,gaza_166817,13.3,False,0.4513,True,44,0.428,1.0,True,0
+91,Tal Sultan Clinic,20240503,primary,test,gaza_31580,2.3,False,0.0766,False,34,0.0603,0.0,False,0
+91,Tal Sultan Clinic,20240706,primary,test,gaza_31580,2.3,False,0.4648,True,34,0.4957,0.853,True,1
+91,Tal Sultan Clinic,20240906,primary,test,gaza_31580,2.3,False,0.774,True,34,0.83,1.0,True,1
+92,Shouka Clinic UNRWA,20240503,primary,test,gaza_1298,10.5,False,0.0155,False,33,0.0202,0.0,False,0
+92,Shouka Clinic UNRWA,20240706,primary,test,gaza_1298,10.5,False,0.8151,True,33,0.771,1.0,True,1
+92,Shouka Clinic UNRWA,20240906,primary,test,gaza_1298,10.5,False,0.8923,True,33,0.8328,1.0,True,1
+93,Shaboura Clinic,20240503,primary,test,gaza_18679,16.5,False,0.2435,True,66,0.1927,0.394,False,0
+93,Shaboura Clinic,20240706,primary,test,gaza_18679,16.5,False,0.3117,True,66,0.3463,0.758,True,0
+93,Shaboura Clinic,20240906,primary,test,gaza_18679,16.5,False,0.6045,True,66,0.5884,1.0,True,0
+94,Sabra UNRWA clinic,20240503,primary,train,gaza_147936,3.6,False,0.3465,True,54,0.3329,0.963,True,1
+94,Sabra UNRWA clinic,20240706,primary,train,gaza_147936,3.6,False,0.5545,True,54,0.4805,1.0,True,1
+94,Sabra UNRWA clinic,20240906,primary,train,gaza_147936,3.6,False,0.5563,True,54,0.4837,1.0,True,1
+95,Beach Health Care center,20240503,primary,train,gaza_177099,19.3,False,0.3673,True,43,0.396,1.0,True,1
+95,Beach Health Care center,20240706,primary,train,gaza_177099,19.3,False,0.3935,True,43,0.4444,1.0,True,1
+95,Beach Health Care center,20240906,primary,train,gaza_177099,19.3,False,0.3556,True,43,0.4319,1.0,True,1
+96,Sheikh Radwan Health Care Center,20240503,primary,train,gaza_175179,4.4,False,0.3114,True,50,0.3282,1.0,True,0
+96,Sheikh Radwan Health Care Center,20240706,primary,train,gaza_175179,4.4,False,0.3815,True,50,0.3409,1.0,True,0
+96,Sheikh Radwan Health Care Center,20240906,primary,train,gaza_175179,4.4,False,0.2795,True,50,0.3168,1.0,True,0
+97,Gaza Town UNRWA health center,20240503,primary,train,gaza_148363,4.4,False,0.6881,True,40,0.6318,1.0,True,1
+97,Gaza Town UNRWA health center,20240706,primary,train,gaza_148363,4.4,False,0.4618,True,40,0.4428,1.0,True,1
+97,Gaza Town UNRWA health center,20240906,primary,train,gaza_148363,4.4,False,0.4842,True,40,0.4884,1.0,True,1
+98,Rimal Health Care center-UNRWA,20240503,primary,train,gaza_166817,13.3,False,0.3525,True,44,0.3258,0.932,True,0
+98,Rimal Health Care center-UNRWA,20240706,primary,train,gaza_166817,13.3,False,0.3625,True,44,0.3321,0.932,True,0
+98,Rimal Health Care center-UNRWA,20240906,primary,train,gaza_166817,13.3,False,0.4513,True,44,0.428,1.0,True,0
+99,Saftawi UNRWA Clinic,20240503,primary,train,gaza_183270,5.8,False,0.2732,True,30,0.25,0.733,True,0
+99,Saftawi UNRWA Clinic,20240706,primary,train,gaza_183270,5.8,False,0.3126,True,30,0.3297,1.0,True,0
+99,Saftawi UNRWA Clinic,20240906,primary,train,gaza_183270,5.8,False,0.2096,True,30,0.2772,0.933,True,0
+100,Fakhoura UNRWA Clinic,20240503,primary,train,gaza_184328,6.2,False,0.3325,True,73,0.3708,0.959,True,0
+100,Fakhoura UNRWA Clinic,20240706,primary,train,gaza_184328,6.2,False,0.4443,True,73,0.3988,1.0,True,0
+100,Fakhoura UNRWA Clinic,20240906,primary,train,gaza_184328,6.2,False,0.478,True,73,0.4279,0.973,True,0

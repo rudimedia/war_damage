@@ -1,0 +1,15 @@
+{
+  "best_params": {
+    "batch_size": 128,
+    "depth": 4,
+    "dropout": 0.2694619197355619,
+    "head_dim": 256,
+    "head_dropout": 0.38909882815030883,
+    "learning_rate": 0.0006903521707993515,
+    "weight_decay": 0.005039489598671216,
+    "width": 16
+  },
+  "best_trial": 0,
+  "best_value": 0.9127207684892367,
+  "selection_metric": "validation_roc_auc"
+}

@@ -1,0 +1,13 @@
+{
+  "best_trial": 8,
+  "best_value": 0.8756018225887995,
+  "selection_metric": "validation_roc_auc",
+  "best_params": {
+    "learning_rate": 0.002769166251652359,
+    "weight_decay": 7.49212141135424e-05,
+    "batch_size": 64,
+    "dropout": 0.11567511690172827,
+    "width": 32,
+    "depth": 2
+  }
+}
