@@ -30,6 +30,7 @@ The shared exploratory analysis combines the PlanetScope and Sentinel-1 inputs a
 │   ├── 3_interactive_map.ipynb
 │   ├── 4_hospital_overlay.ipynb
 │   └── data/
+│       ├── health/       # local health-facility input
 │       └── unosat/       # included source assessment geodatabases
 ├── sentinel_sar/
 │   ├── pipeline.py
@@ -69,6 +70,12 @@ The unzipped File Geodatabases in `shared/data/unosat/` cover the main Gaza stud
 | Rubizhne, Ukraine | `UNOSAT_CE20220223UKR_Rubizhne_CDA_20220709.gdb` |
 
 These are the original UNOSAT assessment sources used by the shared labelling notebook. Generated footprint caches and labelled outputs are intentionally not tracked.
+
+#### Health-facility data
+
+`shared/4_hospital_overlay.ipynb` expects the local GeoPackage `shared/data/health/gaza_health_facilities.gpkg`. It contains 101 geolocated facilities in Gaza: 28 hospitals and 73 primary-care facilities. Its fields include facility identifiers and names, facility tier and subtype, services, level, owner, governorate, and point geometry.
+
+The notebook links each facility to nearby building footprints, applies the trained Sentinel-1 model for all three Gaza assessment dates, and reports both facility-level predictions and damage among surrounding buildings.
 
 ### `sentinel_sar/`
 
@@ -121,4 +128,4 @@ Install the shared Python dependencies with:
 python -m pip install -r requirements.txt
 ```
 
-Google Earth Engine authentication and access to the configured Earth Engine project are required for the Sentinel-1 exports and GEE-based map backgrounds. The UNOSAT geodatabases are kept under `shared/data/unosat/`. PlanetScope imagery, pretrained weights, processed arrays, and large model checkpoints are not distributed as ordinary Git source files and must be placed in the data locations expected by the notebooks.
+Google Earth Engine authentication and access to the configured Earth Engine project are required for the Sentinel-1 exports and GEE-based map backgrounds. The UNOSAT geodatabases are kept under `shared/data/unosat/`. The health-facility GeoPackage, PlanetScope imagery, pretrained weights, processed arrays, and large model checkpoints are not distributed as ordinary Git source files and must be placed in the data locations expected by the notebooks.
