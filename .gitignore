@@ -1,7 +1,9 @@
-# Ignore generated and local data, but keep the UNOSAT source assessments.
+# Ignore generated and local data, but keep the UNOSAT source assessments and OCHA hospital data.
 **/data/*
 !**/data/unosat/
 !**/data/unosat/**
+!**/data/health/
+!**/data/health/**
 **/images/
 **/planet/experiments/planet_exp_pretrained_rsp_resnet50_rgb/models/*.pt
 **/__pycache__/
